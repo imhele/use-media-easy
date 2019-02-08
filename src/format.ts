@@ -1,9 +1,9 @@
-import { CSSProperties } from 'react';
+import MediaQueryProperties from './media';
 
 const Camel2CSS = (camel: string): string =>
   camel.replace(/[A-Z]/g, str => `-${str.toLowerCase()}`).toLowerCase();
 
-const CSSProperties2MediaQuery = (css: CSSProperties): string => {
+const CSSProperties2MediaQuery = (css: MediaQueryProperties): string => {
   return Object.entries(css)
     .map(([key, value]) => {
       key = Camel2CSS(key);
@@ -11,7 +11,7 @@ const CSSProperties2MediaQuery = (css: CSSProperties): string => {
         case 'boolean':
           return value ? `(${key})` : `(not ${key})`;
         case 'number':
-          if (key.endsWith('height') || key.endsWith('width')) value = `${value}px`;
+          return `(${key}: ${value}px)`;
         default:
           return `(${key}: ${value})`;
       }
@@ -19,7 +19,7 @@ const CSSProperties2MediaQuery = (css: CSSProperties): string => {
     .join(' and ');
 };
 
-export default (query: string | CSSProperties | CSSProperties[]): string => {
+export default (query: string | MediaQueryProperties | MediaQueryProperties[]): string => {
   if (typeof query === 'string') return query;
   if (!Array.isArray(query)) return CSSProperties2MediaQuery(query);
   return query.map(CSSProperties2MediaQuery).join(', ');

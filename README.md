@@ -24,7 +24,7 @@ interface UseMediaProps {
   id?: any;
   onChange?: (matches: boolean) => void | boolean;
   paused?: boolean;
-  query?: string | React.CSSProperties | React.CSSProperties[];
+  query?: string | MediaQueryProperties | MediaQueryProperties[];
   targetWindow?: Window;
 }
 ```
@@ -42,7 +42,7 @@ export default () => {
 };
 ```
 
-### With `CSSProperties`
+### With `MediaQueryProperties`
 
 ```jsx
 import useMedia from 'react-media-hook2';

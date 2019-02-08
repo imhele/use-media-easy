@@ -1,6 +1,6 @@
 import format from './format';
+import MediaQueryProperties from './media';
 import {
-  CSSProperties,
   Dispatch,
   MutableRefObject,
   SetStateAction,
@@ -15,7 +15,7 @@ export interface UseMediaProps {
   id?: any;
   onChange?: (matches: boolean) => void | boolean;
   paused?: boolean;
-  query?: string | CSSProperties | CSSProperties[];
+  query?: string | MediaQueryProperties | MediaQueryProperties[];
   targetWindow?: Window;
 }
 

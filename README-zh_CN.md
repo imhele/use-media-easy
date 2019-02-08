@@ -24,7 +24,7 @@ interface UseMediaProps {
   id?: any;
   onChange?: (matches: boolean) => void | boolean;
   paused?: boolean;
-  query?: string | React.CSSProperties | React.CSSProperties[];
+  query?: string | MediaQueryProperties | MediaQueryProperties[];
   targetWindow?: Window;
 }
 ```
@@ -42,7 +42,7 @@ export default () => {
 };
 ```
 
-### 使用 `CSSProperties`
+### 使用 `MediaQueryProperties`
 
 ```jsx
 import useMedia from 'react-media-hook2';
@@ -68,7 +68,7 @@ export default () => {
 };
 ```
 
-注意: 如果 `onChange` 返回的值为 `true`, **`useMedia` 本次将不会改变 `matches` 的值**.
+注意: 如果 `onChange` 返回的值为 `true`, **`useMedia` 本次将不会改变 `matches` 的值**。
 
 ### `getUseMedia`
 
@@ -116,7 +116,7 @@ export default () => {
 };
 ```
 
-### Reset props
+### 重置参数
 
 ```jsx
 import { useState } from 'react';
@@ -135,9 +135,9 @@ export default () => {
 };
 ```
 
-### In _TypeScript_
+### 在 _TypeScript_ 中使用
 
-You can use `enum` to ensure that the `id` is globally unique:
+你可以使用 `enum` 来确保 `id` 是全局唯一的：
 
 ```tsx
 import React from 'react';
