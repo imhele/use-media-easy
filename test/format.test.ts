@@ -11,11 +11,11 @@ describe('Test for `format.ts`', () => {
   });
 
   it('With `MediaQueryProperties`', () => {
-    const mediaQuery = format({ maxWidth: 600, minWidth: 100, screen: false });
+    const mediaQuery = format({ maxWidth: 600, color: 8, screen: false });
     expect(mediaQuery.split('and')).toHaveLength(3);
     expect(mediaQuery.includes('not screen')).toBe(true);
+    expect(mediaQuery.includes('(color: 8)')).toBe(true);
     expect(mediaQuery.includes('(max-width: 600px)')).toBe(true);
-    expect(mediaQuery.includes('(min-width: 100px)')).toBe(true);
   });
 
   it('With `MediaQueryProperties[]`', () => {

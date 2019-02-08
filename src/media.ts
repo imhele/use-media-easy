@@ -1,13 +1,13 @@
 export default interface MediaQueryProperties {
   all?: boolean;
   aspectRatio?: string;
-  color?: string;
-  colorIndex?: string;
+  color?: number | string;
+  colorIndex?: number | string;
   grid?: 0 | 1;
   height?: number | string;
   maxWidth?: number | string;
   minWidth?: number | string;
-  monochrome?: string;
+  monochrome?: number | string;
   orientation?: 'portrait' | 'landscape';
   print?: boolean;
   resolution?: string;

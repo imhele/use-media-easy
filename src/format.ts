@@ -11,7 +11,7 @@ const CSSProperties2MediaQuery = (css: MediaQueryProperties): string => {
         case 'boolean':
           return value ? `(${key})` : `(not ${key})`;
         case 'number':
-          return `(${key}: ${value}px)`;
+          if (key.endsWith('height') || key.endsWith('width')) value = `${value}px`;
         default:
           return `(${key}: ${value})`;
       }
