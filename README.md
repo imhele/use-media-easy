@@ -70,7 +70,7 @@ Tips: if `onChange` return `true`, `useMedia` **will not** change the `matches` 
 
 ### `getUseMedia`
 
-Sometimes we need to use the same media query in many components to achieve responsiveness, so `getUseMedia` is provided for you to get the hook created currently in other components.
+Sometimes we need to use the same media query in many components to achieve responsiveness, so `getUseMedia` is provided for you to get the hook created in other components.
 
 ```jsx
 import ChildComponent from './example';
