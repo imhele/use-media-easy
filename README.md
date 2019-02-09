@@ -38,7 +38,7 @@ import useMedia from 'react-media-hook2';
 
 export default () => {
   const [matches, setProps] = useMedia({ query: '(max-width: 600px)' });
-  return <div>Width of window is {matches ? 'less' : 'greater'} than 600.</div>;
+  return <div>Width of window is {matches ? 'less' : 'greater'} than 600px.</div>;
 };
 ```
 
@@ -49,7 +49,7 @@ import useMedia from 'react-media-hook2';
 
 export default () => {
   const [matches, setProps] = useMedia({ query: { maxWidth: 600 } });
-  return <div>Width of window is {matches ? 'less' : 'greater'} than 600.</div>;
+  return <div>Width of window is {matches ? 'less' : 'greater'} than 600px.</div>;
 };
 ```
 
@@ -98,6 +98,8 @@ export default () => {
 ```
 
 ### Pause listener
+
+You can pause listener to provide additional *desktop version* on mobile devices.
 
 ```jsx
 import { useState } from 'react';

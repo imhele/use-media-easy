@@ -99,6 +99,8 @@ export default () => {
 
 ### 暂停
 
+你可以通过暂停事件监听，以便在移动设备上提供额外的*桌面版*。
+
 ```jsx
 import { useState } from 'react';
 import useMedia from 'react-media-hook2';
