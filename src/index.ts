@@ -21,7 +21,7 @@ export interface UseMediaProps {
 
 export type SetUseMediaProps = Dispatch<SetStateAction<UseMediaProps>>;
 
-const createMatchMedia = (props: UseMediaProps = {}, ref: MutableRefObject<MediaQueryList>) => {
+const createMatchMedia = (props: UseMediaProps, ref: MutableRefObject<MediaQueryList>): boolean => {
   const { query = '', targetWindow = window } = props;
   if (typeof targetWindow !== 'object') {
     // tslint:disable-next-line
@@ -31,7 +31,9 @@ const createMatchMedia = (props: UseMediaProps = {}, ref: MutableRefObject<Media
     console.warn(`[UseMedia] Current \`targetWindow\` doesn't support \`matchMedia\` API.`);
   } else {
     ref.current = targetWindow.matchMedia(format(query));
+    return true;
   }
+  return false;
 };
 
 const usePrevMQListRef = <T>(value: T): T => {
@@ -45,40 +47,43 @@ const usePrevMQListRef = <T>(value: T): T => {
 const useMediaStorage: Map<any, [boolean, SetUseMediaProps]> = new Map();
 
 const useMedia = (initialProps: UseMediaProps = {}): [boolean, SetUseMediaProps] => {
-  const cleanedRef = useRef<boolean>(true);
+  const listenRef = useRef<boolean>(false);
   const setPropsRef = useRef<SetUseMediaProps>(null);
   const useMediaPropsRef = useRef<UseMediaProps>(null);
   const mediaQueryListRef = useRef<MediaQueryList>(null);
   useState(() => {
-    createMatchMedia(initialProps, mediaQueryListRef);
     useMediaPropsRef.current = { ...initialProps };
-    useMediaPropsRef.current.defaultMatches = mediaQueryListRef.current.matches;
+    if (createMatchMedia(useMediaPropsRef.current, mediaQueryListRef))
+      useMediaPropsRef.current.defaultMatches = mediaQueryListRef.current.matches;
     setPropsRef.current = (nextProps = {}) => {
       if (typeof nextProps === 'function')
-        useMediaPropsRef.current = nextProps(useMediaPropsRef.current);
+        useMediaPropsRef.current = nextProps(useMediaPropsRef.current) || {};
       else useMediaPropsRef.current = nextProps;
-      createMatchMedia(useMediaPropsRef.current, mediaQueryListRef);
-      setMatches(mediaQueryListRef.current.matches);
+      if (createMatchMedia(useMediaPropsRef.current, mediaQueryListRef))
+        setMatches(mediaQueryListRef.current.matches);
     };
   });
   const prevMQListRef = usePrevMQListRef(mediaQueryListRef.current);
   const [matches, setMatches] = useState(useMediaPropsRef.current.defaultMatches);
   const eventListener = () => {
-    if (cleanedRef.current || useMediaPropsRef.current.paused) return;
+    if (!useMediaPropsRef.current) return;
+    if (!listenRef.current || useMediaPropsRef.current.paused) return;
     if (useMediaPropsRef.current.onChange) {
       if (useMediaPropsRef.current.onChange(mediaQueryListRef.current.matches)) return;
     }
     setMatches(mediaQueryListRef.current.matches);
   };
   useEffect(() => {
-    if (cleanedRef.current) {
+    if (!listenRef.current && mediaQueryListRef.current) {
       if (prevMQListRef) prevMQListRef.removeListener(eventListener);
-      cleanedRef.current = false;
+      listenRef.current = true;
       mediaQueryListRef.current.addListener(eventListener);
     }
     return () => {
-      cleanedRef.current = true;
-      mediaQueryListRef.current.removeListener(eventListener);
+      if (mediaQueryListRef.current) {
+        listenRef.current = false;
+        mediaQueryListRef.current.removeListener(eventListener);
+      }
     };
   }, [mediaQueryListRef.current]);
   useMemo(() => {
