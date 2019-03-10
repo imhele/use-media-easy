@@ -31,7 +31,7 @@ interface TestComponentProps extends UseMediaProps {
 }
 const TestComponent = ({ getSetProps, ...props }: TestComponentProps) => {
   const [matches, setProps] = useMedia(Object.keys(props).length ? props : void 0);
-  getSetProps && getSetProps(setProps);
+  if (getSetProps) getSetProps(setProps);
   return <span>{`${matches}`}</span>;
 };
 const WrappedTestComponent = () => {
@@ -52,7 +52,6 @@ beforeEach(() => {
 
 afterEach(() => {
   document.body.removeChild(container);
-  container = null;
 });
 
 describe('Test for `index.ts`', () => {
@@ -67,12 +66,12 @@ describe('Test for `index.ts`', () => {
       ReactDOM.render(<TestComponent getSetProps={fn => (setProps = fn)} />, container);
     });
     expect(ListenerQueue.size).toBe(1);
-    expect(container.querySelector('span').textContent).toBe('false');
+    expect(container.querySelector('span')!.textContent).toBe('false');
     expect(() => {
       act(() => {
-        setProps(void 0);
+        setProps(void 0 as any);
         setProps(prev => prev);
-        setProps(() => void 0);
+        setProps(() => void 0 as any);
       });
     }).not.toThrow();
   });
@@ -85,7 +84,7 @@ describe('Test for `index.ts`', () => {
         container,
       );
     });
-    expect(container.querySelector('span').textContent).toBe('true');
+    expect(container.querySelector('span')!.textContent).toBe('true');
   });
 
   it('With invalid `targetWindow`', () => {
@@ -100,10 +99,10 @@ describe('Test for `index.ts`', () => {
         container,
       );
     });
-    expect(setProps).toBeInstanceOf(Function);
-    expect(container.querySelector('span').textContent).toBe('false');
+    expect(setProps!).toBeInstanceOf(Function);
+    expect(container.querySelector('span')!.textContent).toBe('false');
     act(() => setProps({ targetWindow: {} as Window }));
-    expect(container.querySelector('span').textContent).toBe('false');
+    expect(container.querySelector('span')!.textContent).toBe('false');
   });
 
   it('With `id`', () => {
@@ -111,7 +110,7 @@ describe('Test for `index.ts`', () => {
     act(() => {
       ReactDOM.render(<TestComponent id={0} />, container);
     });
-    expect(getUseMedia(0)[0]).toBe(true);
+    expect(getUseMedia(0)![0]).toBe(true);
   });
 
   it('Test matches change and `paused`', () => {
@@ -119,15 +118,16 @@ describe('Test for `index.ts`', () => {
     act(() => {
       ReactDOM.render(<TestComponent getSetProps={fn => (setProps = fn)} id={1} />, container);
       mockMatchMedia.matches = true;
-      ListenerQueue.forEach(listener => listener(void 0));
+      ListenerQueue.forEach(listener => listener(void 0 as any));
     });
-    expect(getUseMedia(1)[0]).toBe(true);
+    expect(getUseMedia(1)).not.toBe(void 0);
+    expect(getUseMedia(1)![0]).toBe(true);
     act(() => {
       setProps(prev => ({ ...prev, paused: true }));
       mockMatchMedia.matches = false;
-      ListenerQueue.forEach(listener => listener(void 0));
+      ListenerQueue.forEach(listener => listener(void 0 as any));
     });
-    expect(getUseMedia(1)[0]).toBe(true);
+    expect(getUseMedia(1)![0]).toBe(true);
   });
 
   it('With `onChange`', () => {
@@ -138,15 +138,15 @@ describe('Test for `index.ts`', () => {
         container,
       );
       mockMatchMedia.matches = true;
-      ListenerQueue.forEach(listener => listener(void 0));
+      ListenerQueue.forEach(listener => listener(void 0 as any));
     });
-    expect(getUseMedia(2)[0]).toBe(true);
+    expect(getUseMedia(2)![0]).toBe(true);
     act(() => {
       setProps(prev => ({ ...prev, onChange: () => true }));
       mockMatchMedia.matches = false;
-      ListenerQueue.forEach(listener => listener(void 0));
+      ListenerQueue.forEach(listener => listener(void 0 as any));
     });
-    expect(getUseMedia(2)[0]).toBe(true);
+    expect(getUseMedia(2)![0]).toBe(true);
   });
 
   it('Remove listener after unmount', () => {
@@ -154,13 +154,35 @@ describe('Test for `index.ts`', () => {
       ReactDOM.render(<WrappedTestComponent />, container);
     });
     act(() => {
-      container.querySelector('button').click();
+      container.querySelector('button')!.click();
     });
     expect(container.querySelector('span')).toBe(null);
     act(() => {
       mockMatchMedia.matches = true;
-      ListenerQueue.forEach(listener => listener(void 0));
+      ListenerQueue.forEach(listener => listener(void 0 as any));
     });
-    expect(getUseMedia('WrappedTestComponent')[0]).toBe(false);
+    expect(getUseMedia('WrappedTestComponent')![0]).toBe(false);
+  });
+
+  it('Remove listener after `targetWindow` changed', () => {
+    let setProps: SetUseMediaProps;
+    act(() => {
+      ReactDOM.render(
+        <TestComponent
+          defaultMatches={false}
+          getSetProps={fn => (setProps = fn)}
+          targetWindow={0 as any}
+        />,
+        container,
+      );
+    });
+    expect(setProps!).toBeInstanceOf(Function);
+    expect(container.querySelector('span')!.textContent).toBe('false');
+    mockMatchMedia.matches = true;
+    act(() => setProps({}));
+    expect(container.querySelector('span')!.textContent).toBe('true');
+    mockMatchMedia.matches = false;
+    act(() => setProps({}));
+    expect(container.querySelector('span')!.textContent).toBe('false');
   });
 });

@@ -11,10 +11,12 @@
     "noImplicitAny": true,
     "preserveConstEnums": true,
     "lib": ["esnext", "dom"],
-    "outDir": "lib/"
+    "outDir": "lib/",
+    "strictNullChecks": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "test/**/*"
   ],
   "exclude": [
     "node_modules",
