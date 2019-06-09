@@ -20,7 +20,7 @@ const mockMatchMedia: WirtableMediaQueryList = {
   removeListener: listener => ListenerQueue.delete(listener),
 };
 Object.defineProperty(window, 'matchMedia', {
-  value: (query: string): MediaQueryList => mockMatchMedia as MediaQueryList,
+  value: (_: string): MediaQueryList => mockMatchMedia as MediaQueryList,
 });
 
 /**
@@ -165,13 +165,13 @@ describe('Test for `index.ts`', () => {
   });
 
   it('Remove listener after `targetWindow` changed', () => {
-    let setProps: SetUseMediaProps;
+    let setProps: SetUseMediaProps | undefined;
     act(() => {
       ReactDOM.render(
         <TestComponent
           defaultMatches={false}
           getSetProps={fn => (setProps = fn)}
-          targetWindow={0 as any}
+          targetWindow={'test' as any}
         />,
         container,
       );
@@ -179,10 +179,10 @@ describe('Test for `index.ts`', () => {
     expect(setProps!).toBeInstanceOf(Function);
     expect(container.querySelector('span')!.textContent).toBe('false');
     mockMatchMedia.matches = true;
-    act(() => setProps({}));
+    act(() => setProps!({}));
     expect(container.querySelector('span')!.textContent).toBe('true');
     mockMatchMedia.matches = false;
-    act(() => setProps({}));
+    act(() => setProps!({}));
     expect(container.querySelector('span')!.textContent).toBe('false');
   });
 });

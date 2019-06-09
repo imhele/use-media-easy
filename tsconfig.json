@@ -11,7 +11,8 @@
     "preserveConstEnums": true,
     "outDir": "lib/",
     "baseUrl": ".",
-    "strict": true
+    "strict": true,
+    "strictNullChecks": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]

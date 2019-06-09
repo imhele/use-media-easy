@@ -47,7 +47,7 @@ const createMatchMedia = (
     // tslint:disable-next-line no-unused-expression
     warn && warn(`[UseMedia] Current \`targetWindow\` doesn't support \`matchMedia\` API.`);
   } else {
-    return (ref.current = targetWindow.matchMedia(format(query))) && void 0;
+    return (ref.current = targetWindow.matchMedia(format(query))) && undefined;
   }
   ref.current = createMatchMediaPolyfill(defaultMatches, format(query)) as MediaQueryList;
 };
@@ -57,7 +57,7 @@ const useMediaStorage: Map<any, [boolean, SetUseMediaProps]> = new Map();
 const useMedia = (initialProps: UseMediaProps = {}): [boolean, SetUseMediaProps] => {
   const listenRef = useRef<boolean>(false);
   const setPropsRef = useRef<SetUseMediaProps>();
-  const mediaQueryListRef = useRef<MediaQueryList>(void 0 as any);
+  const mediaQueryListRef = useRef<MediaQueryList>(undefined!);
   const prevMediaQueryListRef = useRef<MediaQueryList>(mediaQueryListRef.current);
   const useMediaPropsRef = useRef<UseMediaProps>(Object.assign({}, initialProps));
   useState(() => {
