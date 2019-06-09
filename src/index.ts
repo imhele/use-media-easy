@@ -33,7 +33,9 @@ const createMatchMedia = (
   ref: MutableRefObject<MediaQueryList>,
   prevRef: MutableRefObject<MediaQueryList>,
 ): void => {
-  const { defaultMatches = false, query = '', targetWindow = window } = props;
+  const defaultMatches = props.defaultMatches || false;
+  const query = props.query || '';
+  const targetWindow = props.targetWindow || window;
   const warn =
     // tslint:disable-next-line no-console
     ['production', 'test'].includes(process && process.env.NODE_ENV!) && console && console.warn;
@@ -57,7 +59,7 @@ const useMedia = (initialProps: UseMediaProps = {}): [boolean, SetUseMediaProps]
   const setPropsRef = useRef<SetUseMediaProps>();
   const mediaQueryListRef = useRef<MediaQueryList>(void 0 as any);
   const prevMediaQueryListRef = useRef<MediaQueryList>(mediaQueryListRef.current);
-  const useMediaPropsRef = useRef<UseMediaProps>({ ...initialProps });
+  const useMediaPropsRef = useRef<UseMediaProps>(Object.assign({}, initialProps));
   useState(() => {
     createMatchMedia(useMediaPropsRef.current, mediaQueryListRef, prevMediaQueryListRef);
     useMediaPropsRef.current.defaultMatches = mediaQueryListRef.current!.matches;

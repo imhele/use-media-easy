@@ -4,14 +4,15 @@ const Camel2CSS = (camel: string): string =>
   camel.replace(/[A-Z]/g, str => `-${str.toLowerCase()}`).toLowerCase();
 
 const CSSProperties2MediaQuery = (css: MediaQueryProperties): string => {
-  return Object.entries(css)
-    .map(([key, value]) => {
+  return Object.keys(css)
+    .map(key => {
+      let value = css[key as keyof typeof css];
       key = Camel2CSS(key);
       switch (typeof value) {
         case 'boolean':
           return value ? `(${key})` : `(not ${key})`;
         case 'number':
-          if (key.endsWith('height') || key.endsWith('width')) value = `${value}px`;
+          if (/(?:height|width)$/.test(key)) value = `${value}px`;
         default:
           return `(${key}: ${value})`;
       }

@@ -9,6 +9,7 @@
 # production
 /dist
 /lib
+/es
 /coverage
 .npmignore
 

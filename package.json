@@ -1,11 +1,14 @@
 {
   "name": "react-media-hook2",
-  "version": "1.0.5",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
-  "typings": "./lib/index.d.ts",
+  "version": "1.1.0",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "lib/index.d.ts",
+  "typings": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc -p .",
+    "build": "npm run build:es && npm run build:lib",
+    "build:lib": "tsc --build tsconfig.json",
+    "build:es": "tsc --build tsconfig.es.json",
     "coverage": "cat ./coverage/lcov.info | coveralls",
     "lint": "tslint \"src/**/*.ts\" \"test/**/*.ts\"",
     "precommit": "lint-staged",
@@ -38,7 +41,7 @@
   },
   "files": [
     "lib",
-    "src"
+    "es"
   ],
   "license": "MIT",
   "peerDependencies": {
