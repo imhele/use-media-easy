@@ -94,7 +94,7 @@ describe('Test for `index.ts`', () => {
         <TestComponent
           defaultMatches={false}
           getSetProps={fn => (setProps = fn)}
-          targetWindow={0 as any}
+          targetWindow={'test' as any}
         />,
         container,
       );
