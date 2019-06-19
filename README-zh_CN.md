@@ -1,19 +1,19 @@
-# react-media-hook2
+# use-media-easy
 
-[![NPM version](https://img.shields.io/npm/v/react-media-hook2.svg?style=flat)](https://npmjs.org/package/react-media-hook2)
-[![NPM downloads](http://img.shields.io/npm/dm/react-media-hook2.svg?style=flat)](https://npmjs.org/package/react-media-hook2)
-[![Build Status](https://img.shields.io/travis/imhele/react-media-hook2.svg?style=flat)](https://travis-ci.org/imhele/react-media-hook2)
-[![Coverage Status](https://coveralls.io/repos/github/imhele/react-media-hook2/badge.svg?branch=master)](https://coveralls.io/github/imhele/react-media-hook2?branch=master)
-[![License](https://img.shields.io/npm/l/react-media-hook2.svg)](https://npmjs.org/package/react-media-hook2)
+[![NPM version](https://img.shields.io/npm/v/use-media-easy.svg?style=flat)](https://npmjs.org/package/use-media-easy)
+[![NPM downloads](http://img.shields.io/npm/dm/use-media-easy.svg?style=flat)](https://npmjs.org/package/use-media-easy)
+[![Build Status](https://img.shields.io/travis/imhele/use-media-easy.svg?style=flat)](https://travis-ci.org/imhele/use-media-easy)
+[![Coverage Status](https://coveralls.io/repos/github/imhele/use-media-easy/badge.svg?branch=master)](https://coveralls.io/github/imhele/use-media-easy?branch=master)
+[![License](https://img.shields.io/npm/l/use-media-easy.svg)](https://npmjs.org/package/use-media-easy)
 
-[English](https://github.com/imhele/react-media-hook2/blob/master/README.md) | 简体中文
+[English](https://github.com/imhele/use-media-easy/blob/master/README.md) | 简体中文
 
 ## 安装
 
 ```sh
-$ npm install react-media-hook2 --save
+$ npm install use-media-easy --save
 或者
-$ yarn add react-media-hook2
+$ yarn add use-media-easy
 ```
 
 ## 属性
@@ -34,7 +34,7 @@ interface UseMediaProps {
 ### 基本用法
 
 ```jsx
-import useMedia from 'react-media-hook2';
+import useMedia from 'use-media-easy';
 
 export default () => {
   const [matches, setProps] = useMedia({ query: '(max-width: 600px)' });
@@ -45,7 +45,7 @@ export default () => {
 ### 使用 `MediaQueryProperties`
 
 ```jsx
-import useMedia from 'react-media-hook2';
+import useMedia from 'use-media-easy';
 
 export default () => {
   const [matches, setProps] = useMedia({ query: { maxWidth: 600 } });
@@ -59,7 +59,7 @@ export default () => {
 
 ```jsx
 import { useState } from 'react';
-import useMedia from 'react-media-hook2';
+import useMedia from 'use-media-easy';
 
 export default () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -76,7 +76,7 @@ export default () => {
 
 ```jsx
 import ChildComponent from './example';
-import useMedia from 'react-media-hook2';
+import useMedia from 'use-media-easy';
 
 export default () => {
   const [matches, setProps] = useMedia({ id: 0, query: { maxWidth: 600 } });
@@ -89,7 +89,7 @@ export default () => {
 };
 
 // `./example`
-import { getUseMedia } from 'react-media-hook2';
+import { getUseMedia } from 'use-media-easy';
 
 export default () => {
   const [matches, setProps] = getUseMedia(0);
@@ -103,7 +103,7 @@ export default () => {
 
 ```jsx
 import { useState } from 'react';
-import useMedia from 'react-media-hook2';
+import useMedia from 'use-media-easy';
 
 export default () => {
   const [matches, setProps] = useMedia({ query: '(max-width: 600px)' });
@@ -122,7 +122,7 @@ export default () => {
 
 ```jsx
 import { useState } from 'react';
-import useMedia from 'react-media-hook2';
+import useMedia from 'use-media-easy';
 
 export default () => {
   const [matches, setProps] = useMedia({ query: '(max-width: 600px)' });
@@ -143,7 +143,7 @@ export default () => {
 
 ```tsx
 import React from 'react';
-import useMedia from 'react-media-hook2';
+import useMedia from 'use-media-easy';
 
 export enum GlobalId {
   MyComponent,
